@@ -5,9 +5,7 @@ import org.mockito.Mockito;
 import ru.netology.domain.Ticket;
 import ru.netology.repository.TicketRepository;
 
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -33,8 +31,6 @@ class TicketManagerTest {
         Ticket[] expected = {ticket1, ticket2, ticket3};
         Ticket[] actual = ticketManager.findAll("DME", "JFK");
 
-        Arrays.sort(actual);
-
         assertArrayEquals(expected, actual);
 
         verify(ticketRepository).findAll();
@@ -47,8 +43,6 @@ class TicketManagerTest {
 
         Ticket[] expected = {};
         Ticket[] actual = ticketManager.findAll("DME", "LVS");
-
-        Arrays.sort(actual);
 
         assertArrayEquals(expected, actual);
 
@@ -63,8 +57,6 @@ class TicketManagerTest {
         Ticket[] expected = {};
         Ticket[] actual = ticketManager.findAll("VKO", "JFK");
 
-        Arrays.sort(actual);
-
         assertArrayEquals(expected, actual);
 
         verify(ticketRepository).findAll();
@@ -77,8 +69,6 @@ class TicketManagerTest {
 
         Ticket[] expected = {};
         Ticket[] actual = ticketManager.findAll("DME", "VKO");
-
-        Arrays.sort(actual);
 
         assertArrayEquals(expected, actual);
 
