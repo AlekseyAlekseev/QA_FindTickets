@@ -5,9 +5,7 @@ import org.mockito.Mockito;
 import ru.netology.domain.Ticket;
 import ru.netology.repository.TicketRepository;
 
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -16,6 +14,7 @@ class TicketManagerTest {
 
     private TicketRepository ticketRepository = Mockito.mock(TicketRepository.class);
     private TicketManager ticketManager = new TicketManager(ticketRepository);
+    private TicketByPriceAscComparator comparator = new TicketByPriceAscComparator();
 
 
     private Ticket ticket1 = new Ticket(1, 1500, "DME", "JFK", 620);
@@ -33,8 +32,6 @@ class TicketManagerTest {
         Ticket[] expected = {ticket1, ticket2, ticket3};
         Ticket[] actual = ticketManager.findAll("DME", "JFK");
 
-        Arrays.sort(actual);
-
         assertArrayEquals(expected, actual);
 
         verify(ticketRepository).findAll();
@@ -47,8 +44,6 @@ class TicketManagerTest {
 
         Ticket[] expected = {};
         Ticket[] actual = ticketManager.findAll("DME", "LVS");
-
-        Arrays.sort(actual);
 
         assertArrayEquals(expected, actual);
 
@@ -63,8 +58,6 @@ class TicketManagerTest {
         Ticket[] expected = {};
         Ticket[] actual = ticketManager.findAll("VKO", "JFK");
 
-        Arrays.sort(actual);
-
         assertArrayEquals(expected, actual);
 
         verify(ticketRepository).findAll();
@@ -78,7 +71,31 @@ class TicketManagerTest {
         Ticket[] expected = {};
         Ticket[] actual = ticketManager.findAll("DME", "VKO");
 
-        Arrays.sort(actual);
+        assertArrayEquals(expected, actual);
+
+        verify(ticketRepository).findAll();
+    }
+
+    @Test
+    void shouldFindAllTicketsLessTime() {
+        Ticket[] returned = {ticket1, ticket3, ticket2, ticket5, ticket4};
+        doReturn(returned).when(ticketRepository).findAll();
+
+        Ticket[] expected = {ticket3, ticket1, ticket2};
+        Ticket[] actual = ticketManager.findAll("DME", "JFK", comparator);
+
+        assertArrayEquals(expected, actual);
+
+        verify(ticketRepository).findAll();
+    }
+
+    @Test
+    void shouldFindAllNoTicketsSortTime() {
+        Ticket[] returned = {ticket1, ticket3, ticket2, ticket5, ticket4};
+        doReturn(returned).when(ticketRepository).findAll();
+
+        Ticket[] expected = {};
+        Ticket[] actual = ticketManager.findAll("DME", "LVS", comparator);
 
         assertArrayEquals(expected, actual);
 
