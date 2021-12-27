@@ -20,17 +20,17 @@ public class TicketManager {
 
     public Ticket[] findAll(String depAir, String arrAir) {
         Ticket[] tickets = ticketRepository.findAll();
-        Ticket[] result = new Ticket[tickets.length];
+        Ticket[] tmp = new Ticket[tickets.length];
         int index = 0;
         for (Ticket ticket : tickets) {
             if (depAir.equals(ticket.getDepAir()) && arrAir.equals(ticket.getArrAir())) {
-                result[index] = ticket;
+                tmp[index] = ticket;
                 index++;
             }
         }
-        Ticket[] tmp = new Ticket[index];
-        System.arraycopy(result, 0, tmp, 0, tmp.length);
-        return tmp;
+        Ticket[] result = new Ticket[index];
+        System.arraycopy(tmp, 0, result, 0, result.length);
+        return result;
     }
 
     public Ticket findById(int id) {
